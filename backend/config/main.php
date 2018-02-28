@@ -45,6 +45,13 @@ return [
             ],
         ],
         */
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-purple-light',
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];
