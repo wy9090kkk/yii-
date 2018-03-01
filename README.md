@@ -55,3 +55,24 @@ environments/            contains environment-based overrides
 ```
 YII 学习
 一.安装
+    1 使用composer来安装，直接敲命令即可实现安装Yii
+    2 安装后需要进行相关配置，主要DB配置
+二.重点
+    1 配置
+        1） 跟着教程在common下创建了一个components目录，用于存放自己的组件类
+        2） 创建一个自己定义的类 Helpr 并创建一些方法
+        3） 在全局的common/config/main.php的companies下配置一下自己创建的类Helper
+            'components' => [
+                // other code...
+                'helper' => [
+                    'class' => 'common\components\Helper',
+                    'property' => '123',
+                ],
+            ],
+        4） 全局就可以这样调用 Yii::$app->helper->property
+        5） 优先级 app/config/main-local.php > app/config/main.php > common\config\main-local.php > common\config\main.php
+        6） 在params.php文件中可以配置一些键值对，在全局或特定的模块下就可以使用Yii::$app->params['xxx']来调用
+    2 创建后台用户表user_backend 利用yii migrate 和 gii组件创建CURD模块
+    3 ACF访问控制过滤器
+        1） 在控制器的behaviors方法中，access下添加个'class' => AccessControl::className(),并且在下面rules规定一些规则和操作的名称，便可进行访问控制
+    4 

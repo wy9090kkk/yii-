@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Blog */
 
-$this->title = 'Update Blog: {nameAttribute}';
+/* @var $this yii\web\View */
+/* @var $model backend\models\Blog */
+
+$this->title = 'Create Blog';
 $this->params['breadcrumbs'][] = ['label' => 'Blogs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="blog-update">
+<div class="blog-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

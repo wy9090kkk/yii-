@@ -1,14 +1,13 @@
 <?php
 
-namespace frontend\controllers;
+namespace backend\controllers;
 
 use Yii;
-use common\models\Blog;
-use common\models\BlogSearch;
+use backend\models\Blog;
+use backend\models\BlogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use frontend\models\BlogForm;
 
 /**
  * BlogController implements the CRUD actions for Blog model.
@@ -21,6 +20,10 @@ class BlogController extends Controller
     public function behaviors()
     {
         return [
+            // 'myBehavior' => \backend\components\MyBehavior::className(),
+            'as access' => [
+                'class' => 'backend\components\AccessControl',
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -36,11 +39,15 @@ class BlogController extends Controller
      */
     public function actionIndex()
     {
-        // 自定义配置测试
-        /*var_dump(Yii::$app->helper->checkedMobile('186xxx'));
-        var_dump(Yii::$app->helper->property);
-        die;*/
+        //设置访问控制
+        /*if (!Yii::$app->user->can('/blog/index')) {
+           throw new \yii\web\ForbiddenHttpException("没权限访问.");
+        }*/
         
+        //判断用户是否是访客
+        /*$isGuest = $this->isGuest();
+        var_dump($isGuest);*/
+
         $searchModel = new BlogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -70,30 +77,15 @@ class BlogController extends Controller
      */
     public function actionCreate()
     {
-        $model = new BlogForm();
+        $model = new Blog();
 
-        // post提交 且 验证有效，执行if里面的代码
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            // 单纯的调用save方法，该方法也会调用validate方法对表单数据进行校验和过滤，
-            // 因为上面已经调用了validate方法，指定save(false)可避免重复调用validate
-            if ($model->save(false)) {
-                return $this->redirect(['index']);
-            }
-        } 
-        // 验证失败，可以通过yii\base\Model::errors 属性获取相应的验证失败信息
-        // 这一步在实际开发中经常用于调试
-        print_r($model->errors);
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-
-        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['swf_viewport(xmin, xmax, ymin, ymax)', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-        ]);*/
+        ]);
     }
 
     /**
@@ -139,10 +131,20 @@ class BlogController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = BlogForm::findOne($id)) !== null) {
+        if (($model = Blog::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    //增加访问权限控制
+    /*public function beforeAction($action)
+    {
+        $currentRequestRoute = $action->getUniqueId();
+        if (!Yii::$app->user->can('/' . $currentRequestRoute)) {
+            throw new \yii\web\ForbiddenHttpException("没权限访问.");
+        }
+        
+        return true;
+    }*/
 }

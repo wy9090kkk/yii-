@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 
@@ -10,7 +10,10 @@ use Yii;
  * @property int $id
  * @property string $title
  * @property string $content
- * @property string $create_time
+ * @property int $views
+ * @property int $is_delete
+ * @property string $create_at
+ * @property string $update_at
  */
 class Blog extends \yii\db\ActiveRecord
 {
@@ -28,9 +31,12 @@ class Blog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['content', 'create_at', 'update_at'], 'required'],
             [['content'], 'string'],
-            [['create_time'], 'safe'],
+            [['views'], 'integer'],
+            [['create_at', 'update_at'], 'safe'],
             [['title'], 'string', 'max' => 100],
+            [['is_delete'], 'string', 'max' => 4],
         ];
     }
 
@@ -43,7 +49,10 @@ class Blog extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'content' => 'Content',
-            'create_time' => 'Create Time',
+            'views' => 'Views',
+            'is_delete' => 'Is Delete',
+            'create_at' => 'Create At',
+            'update_at' => 'Update At',
         ];
     }
 }
