@@ -19,7 +19,7 @@ class BlogSearch extends Blog
     {
         return [
             [['id', 'views'], 'integer'],
-            [['title', 'content', 'is_delete', 'create_at', 'update_at'], 'safe'],
+            [['title', 'content', 'is_delete', 'category', 'create_at', 'update_at'], 'safe'],
         ];
     }
 
@@ -47,17 +47,25 @@ class BlogSearch extends Blog
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 2,
+                'pageSizeParam' => false,
+            ],
         ]);
 
         $this->load($params);
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        // var_dump($params);die();
         // grid filtering conditions
+        
+        $query->joinWith(['category']);
+        // $query->joinWith(['auth']);
+        // $query->select("user.*, auth.source");
+
         $query->andFilterWhere([
             'id' => $this->id,
             'views' => $this->views,

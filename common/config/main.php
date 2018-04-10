@@ -33,4 +33,11 @@ return [
     'language'=>'zh-CN',
     // 配置时区
     'timeZone'=>'Asia/Shanghai',
+    /*'i18n' => [
+        'translations' => [
+            '*' => [
+                'class' => 'yii\i18n\PhpMessageSource'
+            ],
+        ],
+    ]*/
 ];

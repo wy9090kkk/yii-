@@ -22,7 +22,7 @@ class AccessControl extends \yii\base\ActionFilter
 
         // 获取当前用户已经分配过的路由权限
         // 写的比较简单，有过基础的可自行完善，比如解决"*"的问题，看不懂的该行注释自行忽略
-        $routes = [];
+        $routes = ['/site/error','/site/login','/site/index','/site/logout'];
         $manager = Yii::$app->getAuthManager();
         foreach ($manager->getPermissionsByUser($userId) as $name => $value) {
             if ($name[0] === '/') {
@@ -31,6 +31,8 @@ class AccessControl extends \yii\base\ActionFilter
         }
 
         // 判断当前用户是否有权限访问正在请求的路由
+        /*var_dump($actionId);
+        var_dump($routes);die();*/
         if (in_array($actionId, $routes)) {
             return true;
         }

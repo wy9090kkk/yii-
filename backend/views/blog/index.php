@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\models\Blog;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\BlogSearch */
@@ -24,14 +25,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'title',
             'content:ntext',
             'views',
             'is_delete',
-            //'create_at',
-            //'update_at',
+            [
+                'attribute' => 'category',
+                'value' => function ($model) {
+                    // echo '<pre>';
+                    // print_r($model->getRelatedRecords());
+                    $a = $model->getRelatedRecords()['category'];
+                    $tagName="";
+                    foreach ($a as $key => $value) { 
+                        // var_dump($value->name);                       
+                        $tagName.=$value->name.'/';
+                    }
+                    return rtrim($tagName,'/'); 
+                }
+            ],
+            'create_at',
+            'update_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
